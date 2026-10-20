@@ -75,19 +75,6 @@ export default function ProfilePage() {
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     setIsUpdating(true);
-    const response = await fetch("/api/profile", {
-  method: "PUT",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(profile),
-});
-
-if (response.ok) {
-  // 1. Tell NextAuth to update its current file's token session context
-  await update({ name: profile.name, image: profile.image });
-  
-  // 2. 🔥 THE MAGIC PUNCH: Broadcast a global window event to update the Navbar instantly!
-  window.dispatchEvent(new Event("panto-profile-updated"));
-}
 
     try {
       const response = await fetch("/api/profile", {
@@ -97,16 +84,20 @@ if (response.ok) {
       });
 
       if (response.ok) {
-        // 🔥 CRITICAL: Updates the client-side NextAuth session cookie on the fly.
-        // This forces your Navbar component to instantly show the new name!
-        await update({ name: profile.name });
-        
+        // 1. Tell NextAuth to update session token context
+        await update({ name: profile.name, image: profile.image });
+
+        // 2. Broadcast global window event for instant Navbar update
+        window.dispatchEvent(new Event("panto-profile-updated"));
+
         triggerToast("✨ Profile updated and session synchronized!", "success");
       } else {
-        throw new Error("Mutation rejected");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Mutation rejected");
       }
     } catch (err) {
-      triggerToast("Write pipeline failed.", "error");
+      console.error("Profile update error:", err);
+      triggerToast(err.message || "Write pipeline failed.", "error");
     } finally {
       setIsUpdating(false);
     }
@@ -323,17 +314,25 @@ if (response.ok) {
                                 <div className="text-gray-500 font-semibold">
                                   {item.name} <span className="text-gray-300 font-normal ml-1">x{item.quantity}</span>
                                 </div>
-                                <span className="font-bold text-[#0D1B2A]">৳{item.price?.toFixed(2)}</span>
+                                <span className="font-bold text-[#0D1B2A]">
+                                  ${Number(item.price || 0).toFixed(2)}
+                                </span>
                               </div>
                             ))}
                           </div>
 
                           <div className="border-t border-gray-50 pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
                             <div className="text-gray-400 font-medium">
-                              Payment Strategy: <span className="text-gray-600 font-bold font-mono text-[11px]">{order.paymentMethod}</span>
+                              Payment Method:{" "}
+                              <span className="text-gray-700 font-bold font-mono text-[11px] uppercase">
+                                {order.paymentMethod || order.payment?.method || "COD"}
+                              </span>
                             </div>
                             <div className="font-extrabold text-sm text-[#0D1B2A]">
-                              Total Settled: <span className="text-base text-orange-500 ml-1">৳{order.total?.toFixed(2)}</span>
+                              Total Settled:{" "}
+                              <span className="text-base text-orange-500 ml-1">
+                                ${Number(order.total || order.totals?.grandTotal || 0).toFixed(2)}
+                              </span>
                             </div>
                           </div>
 

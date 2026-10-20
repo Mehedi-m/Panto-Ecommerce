@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Material() {
@@ -71,12 +72,15 @@ export default function Material() {
               environment, using a very expensive and famous capital but at a
               relatively low price
             </p>
-            <button className="mt-8 text-orange-500  font-medium text-sm flex items-center gap-3 group transition-opacity hover:opacity-80">
+            <Link
+              href="/about"
+              className="inline-flex mt-8 text-orange-500 font-medium text-sm items-center gap-3 group transition-opacity hover:opacity-80"
+            >
               More Info 
               <span className="inline-block transition-transform group-hover:translate-x-1.5 tracking-tighter">
                 —→
               </span>
-            </button>
+            </Link>
           </div>
 
           {/* Right Column Multi-Image Grid with Shadows */}

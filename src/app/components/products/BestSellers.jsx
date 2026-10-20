@@ -4,14 +4,15 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation"; // Imported for programmatic routing
 import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "@/context/CartContext";
 
 const CATEGORIES = ["Chair", "Bed", "Sofa", "Lamp"];
 
 export default function BestSellers() {
   const router = useRouter(); // Initialize the router
+  const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("Chair");
-  const [cartCount, setCartCount] = useState(0);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -44,13 +45,13 @@ export default function BestSellers() {
 
   const handleAddToCart = (product, e) => {
     e.stopPropagation(); // Prevents navigating to details page
-    setCartCount(prev => prev + 1);
-    alert(`Added "${product.name}" to cart!`);
+    addToCart(product);
   };
 
   const handleBuyNow = (product, e) => {
     e.stopPropagation(); // Prevents navigating to details page
-    alert(`Redirecting to checkout for "${product.name}" ($${product.price})`);
+    addToCart(product);
+    router.push("/checkout");
   };
 
   return (

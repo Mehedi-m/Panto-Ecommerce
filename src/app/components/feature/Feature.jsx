@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Feature() {
   return (
     <section className="bg-white text-black py-20 px-10">
@@ -14,9 +16,12 @@ export default function Feature() {
           <p className="text-gray-500 mt-2">
             We provide premium quality furniture with modern design for your comfort.
           </p>
-           <button className="mt-8 text-orange-500 font-medium hover:translate-x-2 transition-transform duration-300">
-              More Info →
-            </button>
+          <Link
+            href="/about"
+            className="inline-block mt-8 text-orange-500 font-medium hover:translate-x-2 transition-transform duration-300"
+          >
+            More Info →
+          </Link>
         </div>
 
         <div>
@@ -27,9 +32,12 @@ export default function Feature() {
           <p className="text-gray-500 mt-2">
             Get high-quality furniture at the best and most affordable prices.
           </p>
-           <button className="mt-8 text-orange-500 font-medium hover:translate-x-2 transition-transform duration-300">
-              More Info →
-            </button>
+          <Link
+            href="/about"
+            className="inline-block mt-8 text-orange-500 font-medium hover:translate-x-2 transition-transform duration-300"
+          >
+            More Info →
+          </Link>
         </div>
 
         <div>
@@ -40,9 +48,12 @@ export default function Feature() {
           <p className="text-gray-500 mt-2">
             A wide variety of styles and designs for every type of home interior.
           </p>
-           <button className="mt-8 text-orange-500 font-medium hover:translate-x-2 transition-transform duration-300">
-              More Info →
-            </button>
+          <Link
+            href="/shop"
+            className="inline-block mt-8 text-orange-500 font-medium hover:translate-x-2 transition-transform duration-300"
+          >
+            Explore Catalog →
+          </Link>
         </div>
       </div>
     </section>

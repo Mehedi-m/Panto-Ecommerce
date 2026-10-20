@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function Experience() {
@@ -111,9 +112,12 @@ export default function Experience() {
               comfort into your living space.
             </p>
 
-            <button className="mt-8 text-orange-500 font-medium hover:translate-x-2 transition-transform duration-300 flex items-center gap-2">
+            <Link
+              href="/about"
+              className="inline-flex mt-8 text-orange-500 font-medium hover:translate-x-2 transition-transform duration-300 items-center gap-2"
+            >
               More Info <span>→</span>
-            </button>
+            </Link>
           </div>
 
         </div>

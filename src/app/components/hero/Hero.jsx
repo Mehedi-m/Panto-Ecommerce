@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import bgImage from "@/utils/bg-image.jpg";
 import Navbar from "../navbar/Navbar";
@@ -12,11 +13,20 @@ const texts = [
   "Search sofas...",
 ];
 
-
-
 export default function Hero() {
+  const router = useRouter();
   const [placeholder, setPlaceholder] = useState("");
   const [textIndex, setTextIndex] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      router.push("/shop");
+    }
+  };
 
   useEffect(() => {
     let charIndex = 0;
@@ -49,12 +59,10 @@ export default function Hero() {
     >
       <div className="absolute inset-0 bg-black/30" />
 
-      <Navbar></Navbar>
-
-
+      <Navbar />
 
       <div className="relative z-10 flex flex-col items-center text-center mt-20 px-4">
-        <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+        <h1 className="text-4xl md:text-6xl font-bold text-white  leading-tight">
           Make Your Interior More <br />
           Minimalistic & Modern
         </h1>
@@ -63,17 +71,26 @@ export default function Hero() {
           Turn your room into a lot more minimalist and modern with ease and speed.
         </p>
 
-        <div className="mt-10 flex items-center bg-white/10 backdrop-blur-md rounded-full px-4 py-2 w-[320px] md:w-[420px]">
+        <form
+          onSubmit={handleSearchSubmit}
+          className="mt-10 flex items-center bg-white/10 backdrop-blur-md rounded-full px-4 py-2 w-[320px] md:w-[420px] border border-white/20 focus-within:border-orange-500 transition-colors"
+        >
           <input
             type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={placeholder}
-            className="bg-transparent flex-1 outline-none text-white px-2"
+            className="bg-transparent flex-1 outline-none text-white px-2 placeholder:text-gray-300 text-sm"
           />
 
-          <button className="bg-orange-500 p-2 rounded-full">
+          <button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600 p-2 rounded-full text-white transition-colors cursor-pointer"
+            aria-label="Search Catalog"
+          >
             <Search size={18} />
           </button>
-        </div>
+        </form>
       </div>
 
       <div className="absolute top-[60%] left-[20%] w-4 h-4 bg-white rounded-full animate-pulse" />
